@@ -21,20 +21,9 @@ export default async function handler(req, res) {
       sensexData.chart.result[0].meta;
 
     res.status(200).json({
-
-      nifty: {
-        price: niftyMeta.regularMarketPrice,
-        change: niftyMeta.regularMarketChange,
-        percent: niftyMeta.regularMarketChangePercent
-      },
-
-      sensex: {
-        price: sensexMeta.regularMarketPrice,
-        change: sensexMeta.regularMarketChange,
-        percent: sensexMeta.regularMarketChangePercent
-      }
-
-    });
+      niftyMeta,
+      sensexMeta
+});
 
   } catch (err) {
 
