@@ -21,8 +21,17 @@ export default async function handler(req, res) {
       sensexData.chart.result[0].meta;
 
     res.status(200).json({
-      niftyMeta,
-      sensexMeta
+      
+      nifty: {
+        price: niftyMeta.regularMarketPrice,
+        previousClose: niftyMeta.previousClose
+      },
+      
+      sensex: {
+        price: sensexMeta.regularMarketPrice,
+        previousClose: sensexMeta.previousClose
+      }
+
 });
 
   } catch (err) {
