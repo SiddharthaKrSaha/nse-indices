@@ -1,5 +1,13 @@
 export default async function handler(req, res) {
 
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   try {
 
     const niftyResponse = await fetch(
@@ -20,19 +28,33 @@ export default async function handler(req, res) {
     const sensexMeta =
       sensexData.chart.result[0].meta;
 
+    const niftyChange =
+      niftyMeta.regularMarketPrice - niftyMeta.previousClose;
+
+    const niftyPercent =
+      (niftyChange / niftyMeta.previousClose) * 100;
+
+    const sensexChange =
+      sensexMeta.regularMarketPrice - sensexMeta.previousClose;
+
+    const sensexPercent =
+      (sensexChange / sensexMeta.previousClose) * 100;
+
     res.status(200).json({
-      
+
       nifty: {
         price: niftyMeta.regularMarketPrice,
-        previousClose: niftyMeta.previousClose
+        change: niftyChange,
+        percent: niftyPercent
       },
-      
+
       sensex: {
         price: sensexMeta.regularMarketPrice,
-        previousClose: sensexMeta.previousClose
+        change: sensexChange,
+        percent: sensexPercent
       }
 
-});
+    });
 
   } catch (err) {
 
